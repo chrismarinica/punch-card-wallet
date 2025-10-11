@@ -1,23 +1,26 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Wallet from './pages/Wallet'
-import Rewards from './pages/Rewards'
-import Profile from './pages/Profile'
-import NavBar from './components/NavBar'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Business from "./pages/Business";
+import Client from "./pages/Client";
+import NavBar from "./components/NavBar";
+import { useAuth } from "./context/AuthContext";
 
 const App: React.FC = () => {
+  const { userType } = useAuth();
+
   return (
-    <Router>
-      <NavBar />
+    <div>
+      {/* Navbar only shows if user has logged in */}
+      {userType && <NavBar />}
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/wallet" element={<Wallet />} />
-        <Route path="/rewards" element={<Rewards />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/business" element={<Business />} />
+        <Route path="/client" element={<Client />} />
       </Routes>
-    </Router>
-  )
-}
+    </div>
+  );
+};
 
-export default App
+export default App;
