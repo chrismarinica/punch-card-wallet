@@ -15,7 +15,7 @@ const Home: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
         {/* Business Section */}
         <Link
-          to="/business"
+          to="/business-auth"
           className="bg-white rounded-xl shadow-lg p-10 flex flex-col items-center justify-center hover:shadow-2xl hover:scale-105 transition-transform duration-300"
         >
           <img src={BusinessImg} alt="Business" className="w-40 h-40 mb-6" />
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
 
         {/* Client Section */}
         <Link
-          to="/client"
+          to="/client-auth"
           className="bg-white rounded-xl shadow-lg p-10 flex flex-col items-center justify-center hover:shadow-2xl hover:scale-105 transition-transform duration-300"
         >
           <img src={ClientImg} alt="Client" className="w-40 h-40 mb-6" />
