@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Client, { IClient } from "../models/Client.js";
 import mongoose from "mongoose";
+import { verifyToken } from "../middleware/auth"; // make sure your auth middleware sets req.clientId
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || "secretkey";
@@ -13,14 +14,9 @@ router.post("/register", async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     console.log("Client registration attempt:", { name, email });
 
-    // Check if email exists
     const existing = await Client.findOne({ email });
-    if (existing) {
-      console.log("Client registration failed: email already exists");
-      return res.status(400).json({ message: "Email already registered" });
-    }
+    if (existing) return res.status(400).json({ message: "Email already registered" });
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     const newClient = await Client.create({ name, email, password: hashedPassword });
 
@@ -41,16 +37,10 @@ router.post("/login", async (req: Request, res: Response) => {
     console.log("Client login attempt:", { email });
 
     const client = await Client.findOne({ email });
-    if (!client) {
-      console.log("Client login failed: invalid credentials");
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    if (!client) return res.status(400).json({ message: "Invalid credentials" });
 
     const validPassword = await bcrypt.compare(password, client.password);
-    if (!validPassword) {
-      console.log("Client login failed: invalid password");
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    if (!validPassword) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: client._id }, JWT_SECRET, { expiresIn: "1h" });
     console.log("Client logged in successfully:", client._id);
@@ -62,11 +52,13 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-// Add a business to favorites
-router.post("/favorites/:businessId", async (req: Request, res: Response) => {
+// Add a business to favorites (using JWT)
+router.post("/favorites/:businessId", verifyToken, async (req: Request, res: Response) => {
   try {
-    const clientId = req.body.clientId; // ideally get from JWT
+    const clientId = req.clientId; // <-- from JWT via verifyToken middleware
     const { businessId } = req.params;
+
+    if (!clientId) return res.status(401).json({ message: "Unauthorized" });
 
     const client = await Client.findById<IClient>(clientId);
     if (!client) return res.status(404).json({ message: "Client not found" });
@@ -75,7 +67,7 @@ router.post("/favorites/:businessId", async (req: Request, res: Response) => {
 
     const businessObjectId = new mongoose.Types.ObjectId(businessId);
 
-    if (!client.favoriteBusinesses.includes(businessObjectId)) {
+    if (!client.favoriteBusinesses.some((id) => id.equals(businessObjectId))) {
       client.favoriteBusinesses.push(businessObjectId);
       await client.save();
     }
@@ -83,6 +75,22 @@ router.post("/favorites/:businessId", async (req: Request, res: Response) => {
     res.json({ message: "Business added to favorites", favoriteBusinesses: client.favoriteBusinesses });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get a client's favorite businesses (using JWT)
+router.get("/favorites", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const clientId = req.clientId;
+    if (!clientId) return res.status(401).json({ message: "Unauthorized" });
+
+    const client = await Client.findById(clientId).populate("favoriteBusinesses");
+    if (!client) return res.status(404).json({ message: "Client not found" });
+
+    res.json(client.favoriteBusinesses);
+  } catch (err) {
+    console.error("Get favorites error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
