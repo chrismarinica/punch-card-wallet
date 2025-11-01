@@ -48,4 +48,5 @@ router.post("/favorites/:businessId", verifyToken, addFavoriteBusiness);
 router.get("/favorites", verifyToken, getFavoriteBusinesses);
 router.delete("/favorites/:businessId", verifyToken, removeFavoriteBusiness);
 
+
 export default router;

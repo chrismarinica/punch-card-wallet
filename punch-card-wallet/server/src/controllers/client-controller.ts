@@ -33,7 +33,7 @@ export const registerClient = async (req: Request, res: Response) => {
 
 // Login a client
 export const loginClient = async (req: Request, res: Response) => {
-  console.log("Incoming login request:", req.body); // 👈 Add this
+  console.log("Incoming login request:", req.body);
   try {
     const { email, password } = req.body;
 
@@ -109,15 +109,24 @@ export const addFavoriteBusiness = async (req: Request, res: Response) => {
 
     if (!client.favoriteBusinesses) client.favoriteBusinesses = [];
 
-    const businessObjectId = new mongoose.Types.ObjectId(businessId);
+    const alreadyFavorited = client.favoriteBusinesses.some((id) => {
+      if (typeof id === "string") return id === businessId;
+      return id.equals?.(businessId);
+    });
 
-    if (!client.favoriteBusinesses.some((id) => id.equals(businessObjectId))) {
-      client.favoriteBusinesses.push(businessObjectId);
+    if (!alreadyFavorited) {
+      client.favoriteBusinesses.push(businessId as any); // string or ObjectId
       await client.save();
     }
 
-    res.json({ message: "Business added to favorites", favoriteBusinesses: client.favoriteBusinesses });
+    await client.populate("favoriteBusinesses");
+
+    res.json({
+      message: "Business added to favorites",
+      favoriteBusinesses: client.favoriteBusinesses,
+    });
   } catch (error) {
+    console.error("Error in addFavoriteBusiness:", error);
     res.status(500).json({ message: "Error adding favorite", error });
   }
 };
@@ -149,14 +158,18 @@ export const removeFavoriteBusiness = async (req: Request, res: Response) => {
     if (!client) return res.status(404).json({ message: "Client not found" });
 
     client.favoriteBusinesses = client.favoriteBusinesses.filter(
-      (id) => !id.equals(businessId)
+      (id) => {
+        if (typeof id === "string") return id !== businessId;
+        return !id.equals?.(businessId);
+      }
     );
 
     await client.save();
+
+    await client.populate("favoriteBusinesses");
 
     res.json({ message: "Business removed from favorites", favoriteBusinesses: client.favoriteBusinesses });
   } catch (error) {
     res.status(500).json({ message: "Error removing favorite", error });
   }
 };
-
