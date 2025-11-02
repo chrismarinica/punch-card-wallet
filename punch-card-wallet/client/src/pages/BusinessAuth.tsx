@@ -76,7 +76,7 @@ const BusinessAuth: React.FC = () => {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+            className="bg-slate-600 text-white py-2 rounded hover:bg-slate-700 transition-colors"
           >
             {isRegister ? "Register" : "Login"}
           </button>
@@ -86,7 +86,7 @@ const BusinessAuth: React.FC = () => {
           {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             onClick={() => setIsRegister(!isRegister)}
-            className="text-blue-600 font-bold underline"
+            className="text-slate-600 font-bold underline"
           >
             {isRegister ? "Login" : "Register"}
           </button>
