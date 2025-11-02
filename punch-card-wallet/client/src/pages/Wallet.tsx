@@ -2,6 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getToken } from "../utils/token";
+import coffeeImg from "../assets/coffee.jpg";
+import flowerImg from "../assets/flowers.jpg";
+import gymImg from "../assets/gym.jpg";
+import spaImg from "../assets/sauna.jpg";
+import tattooImg from "../assets/tattoo.jpg";
+import yogaImg from "../assets/yoga.jpg";
+
 
 interface Business {
   _id: string;
@@ -20,7 +27,7 @@ const sampleFavorites: Business[] = [
     category: "Cafe",
     location: "Detroit, MI",
     description: "Locally roasted coffee and fresh pastries in the heart of downtown Detroit.",
-    avatar: "https://source.unsplash.com/120x120/?coffee,cafe",
+    avatar: coffeeImg,
   },
   {
     _id: "sample-2",
@@ -28,7 +35,7 @@ const sampleFavorites: Business[] = [
     category: "Health & Wellness",
     location: "Royal Oak, MI",
     description: "Offering holistic health services, yoga, and meditation workshops.",
-    avatar: "https://source.unsplash.com/120x120/?yoga,wellness,meditation",
+    avatar: yogaImg,
   },
   {
     _id: "sample-3",
@@ -36,7 +43,7 @@ const sampleFavorites: Business[] = [
     category: "Gym",
     location: "Ferndale, MI",
     description: "Strength and conditioning programs focused on community and results.",
-    avatar: "https://source.unsplash.com/120x120/?gym,fitness,weights",
+    avatar: gymImg,
   },
   {
     _id: "sample-4",
@@ -44,7 +51,7 @@ const sampleFavorites: Business[] = [
     category: "Florist",
     location: "Detroit, MI",
     description: "Artisan floral arrangements inspired by the beauty of Belle Isle.",
-    avatar: "https://source.unsplash.com/120x120/?flowers,florist",
+    avatar: flowerImg,
   },
   {
     _id: "sample-5",
@@ -52,7 +59,7 @@ const sampleFavorites: Business[] = [
     category: "Spa",
     location: "Birmingham, MI",
     description: "Luxury spa offering massages, saunas, and wellness treatments.",
-    avatar: "https://source.unsplash.com/120x120/?spa,relaxation",
+    avatar: spaImg,
   },
   {
     _id: "sample-6",
@@ -60,7 +67,7 @@ const sampleFavorites: Business[] = [
     category: "Tattoo Studio",
     location: "Midtown Detroit, MI",
     description: "Custom tattoos with bold designs and a clean, creative space.",
-    avatar: "https://source.unsplash.com/120x120/?tattoo,studio",
+    avatar: tattooImg,
   },
 ];
 
@@ -101,7 +108,7 @@ const Wallet: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 via-teal-400 to-blue-400 bg-clip-text text-transparent">
+      <h2 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-black-400 via-black-400 to-black-400">
         Your Favorite Businesses
       </h2>
 

@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-blue-500 text-white p-4 flex gap-4">
+    <nav className="bg-slate-500 text-white p-4 flex gap-4">
       <Link to="/">Home</Link>
 
       {userType === "client" && (
@@ -37,7 +37,7 @@ const NavBar: React.FC = () => {
       {userType && (
         <button
           onClick={handleLogout}
-          className="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded"
+          className="ml-auto bg-slate-500 hover:bg-slate-600 text-white font-bold py-1 px-3 rounded"
         >
           Logout
         </button>

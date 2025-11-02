@@ -25,6 +25,7 @@ const Profile: React.FC = () => {
       const res = await axios.get("http://localhost:3001/api/client/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       setUser(res.data);
     } catch (err) {
       console.error("Error fetching profile:", err);
@@ -44,13 +45,13 @@ const Profile: React.FC = () => {
       <div className="bg-white rounded-xl shadow-md p-6 w-full max-w-lg">
         <div className="flex flex-col items-center text-center">
           <img
-            src={user?.avatarUrl || "https://via.placeholder.com/120?text=Avatar"}
-            alt="User Avatar"
-            className="w-28 h-28 rounded-full mb-4 border-4 border-green-500 object-cover"
+            src={user?.avatarUrl || "/cAvatar.jpg"} // ✅ Use cAvatar.jpg from public as fallback
+            alt={user?.name || "User Avatar"}
+            className="w-28 h-28 rounded-full mb-4 border-4 border-slate-500 object-cover"
           />
           <h2 className="text-2xl font-bold text-gray-800">{user?.name || "Client Name"}</h2>
           <p className="text-gray-600 mb-2">{user?.email || "email@example.com"}</p>
-          <button className="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+          <button className="mt-2 bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-lg">
             Edit Profile
           </button>
         </div>

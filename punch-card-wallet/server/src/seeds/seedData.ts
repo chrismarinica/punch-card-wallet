@@ -1,8 +1,8 @@
 // src/seeds/seedData.ts
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import Client from "../models/Client.js";
-import Business from "../models/Business.js";
+import Client from "../models/Client.ts";
+import Business from "../models/Business.ts";
 
 const MONGO_URI = "mongodb://127.0.0.1:27017/punchcard";
 
@@ -13,6 +13,7 @@ const clients = [
     email: "client@test.com",
     phone: "555-0000",
     password: "client123",
+    avatar: "/cAvatar.jpg", // ✅ Add image reference (served from client/public)
   },
 ];
 
@@ -21,7 +22,8 @@ const businesses = [
     name: "Example Coffee Co.",
     category: "Cafe",
     location: "Detroit, MI",
-    description: "Locally roasted coffee and fresh pastries in the heart of downtown Detroit.",
+    description:
+      "Locally roasted coffee and fresh pastries in the heart of downtown Detroit.",
     email: "coffee@example.com",
     phone: "555-1001",
     password: "coffee123",
@@ -30,7 +32,8 @@ const businesses = [
     name: "Example Detroit Wellness Center",
     category: "Health & Wellness",
     location: "Royal Oak, MI",
-    description: "Offering holistic health services, yoga, and meditation workshops.",
+    description:
+      "Offering holistic health services, yoga, and meditation workshops.",
     email: "wellness@example.com",
     phone: "555-1002",
     password: "wellness123",
@@ -39,7 +42,8 @@ const businesses = [
     name: "Example Belt Fitness",
     category: "Gym",
     location: "Ferndale, MI",
-    description: "Strength and conditioning programs focused on community and results.",
+    description:
+      "Strength and conditioning programs focused on community and results.",
     email: "beltfitness@example.com",
     phone: "555-1003",
     password: "belt123",
@@ -48,7 +52,8 @@ const businesses = [
     name: "Example Flower Shop",
     category: "Florist",
     location: "Detroit, MI",
-    description: "Artisan floral arrangements inspired by the beauty of Belle Isle.",
+    description:
+      "Artisan floral arrangements inspired by the beauty of Belle Isle.",
     email: "flowershop@example.com",
     phone: "555-1004",
     password: "flowers123",
@@ -57,7 +62,8 @@ const businesses = [
     name: "Example Tattoo Studio",
     category: "Tattoo Studio",
     location: "Midtown Detroit, MI",
-    description: "Custom tattoos with bold designs and a clean, creative space.",
+    description:
+      "Custom tattoos with bold designs and a clean, creative space.",
     email: "tattoo@example.com",
     phone: "555-1005",
     password: "tattoo123",
@@ -66,7 +72,8 @@ const businesses = [
     name: "Example Spa & Sauna",
     category: "Spa",
     location: "Birmingham, MI",
-    description: "Luxury spa offering massages, saunas, and wellness treatments.",
+    description:
+      "Luxury spa offering massages, saunas, and wellness treatments.",
     email: "spa@example.com",
     phone: "555-1006",
     password: "spa123",
@@ -85,11 +92,17 @@ async function seedDatabase() {
 
     // Hash passwords
     const hashedClients = await Promise.all(
-      clients.map(async (c) => ({ ...c, password: await bcrypt.hash(c.password, 10) }))
+      clients.map(async (c) => ({
+        ...c,
+        password: await bcrypt.hash(c.password, 10),
+      }))
     );
 
     const hashedBusinesses = await Promise.all(
-      businesses.map(async (b) => ({ ...b, password: await bcrypt.hash(b.password, 10) }))
+      businesses.map(async (b) => ({
+        ...b,
+        password: await bcrypt.hash(b.password, 10),
+      }))
     );
 
     // Insert data
