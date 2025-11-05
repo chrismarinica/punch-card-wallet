@@ -1,6 +1,6 @@
 // server/src/routes/businessRoutes.ts
 import { Router } from "express";
-import { verifyToken } from "../middleware/auth";
+import { verifyToken } from "../middleware/auth.js";
 import {
   registerBusiness,
   loginBusiness,

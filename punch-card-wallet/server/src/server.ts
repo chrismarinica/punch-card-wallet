@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import businessRoutes from "./routes/businessRoutes";
-import clientRoutes from "./routes/clientRoutes";
-import "./config/connection";
+import businessRoutes from "./routes/businessRoutes.js";
+import clientRoutes from "./routes/clientRoutes.js";
+import "./config/connection.js";
 
 dotenv.config();
 

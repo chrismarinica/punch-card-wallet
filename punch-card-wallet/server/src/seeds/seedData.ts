@@ -1,8 +1,8 @@
 // src/seeds/seedData.ts
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import Client from "../models/Client.ts";
-import Business from "../models/Business.ts";
+import Client from "../models/Client.js";
+import Business from "../models/Business.js";
 
 const MONGO_URI = "mongodb://127.0.0.1:27017/punchcard";
 
