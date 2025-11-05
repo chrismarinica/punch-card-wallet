@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
 import businessRoutes from "./routes/businessRoutes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import "./config/connection.js";
@@ -11,14 +12,17 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Fix __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Simple logger middleware
+// Simple logger
 app.use((req, res, next) => {
-  const now = new Date().toISOString();
-  console.log(`[${now}] ${req.method} ${req.path}`);
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
   next();
 });
 
@@ -26,12 +30,11 @@ app.use((req, res, next) => {
 app.use("/api/business", businessRoutes);
 app.use("/api/client", clientRoutes);
 
-// Serve frontend static files
-// Use path relative to the root, works on Render
-const clientDistPath = path.resolve("client/dist");
+// Serve React static files
+const clientDistPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientDistPath));
 
-// Catch-all route to serve React's index.html
+// Catch-all route to serve React
 app.get("*", (_req, res) => {
   res.sendFile(path.join(clientDistPath, "index.html"));
 });

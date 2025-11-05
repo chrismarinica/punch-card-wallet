@@ -1,18 +1,15 @@
 {
   "name": "punch-card-wallet",
   "version": "1.0.0",
-  "main": "server/dist/server.js",
-  "type": "module",
   "scripts": {
     "install": "cd server && npm install && cd ../client && npm install",
     "build": "cd client && npm run build && cd ../server && npm run build",
-    "start": "node server/dist/server.js",
+    "start": "cd server && npm start",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^8.2.0"
   }
 }
