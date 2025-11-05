@@ -27,7 +27,7 @@ app.use("/api/business", businessRoutes);
 app.use("/api/client", clientRoutes);
 
 // Serve frontend static files
-const clientDistPath = path.join(__dirname, "../../client/dist");
+const clientDistPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientDistPath));
 
 // Catch-all route to serve React's index.html
