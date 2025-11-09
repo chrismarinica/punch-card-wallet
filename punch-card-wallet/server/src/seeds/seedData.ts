@@ -1,10 +1,15 @@
 // src/seeds/seedData.ts
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+// ✅ Include .js extension for NodeNext module resolution
 import Client from "../models/Client.js";
 import Business from "../models/Business.js";
 
-const MONGO_URI = "mongodb://127.0.0.1:27017/punchcard";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/punchcard";
 
 // Sample data
 const clients = [
@@ -13,7 +18,7 @@ const clients = [
     email: "client@test.com",
     phone: "555-0000",
     password: "client123",
-    avatar: "/cAvatar.jpg", // ✅ Add image reference (served from client/public)
+    avatar: "/cAvatar.jpg", // served from client/public
   },
 ];
 
@@ -85,12 +90,10 @@ async function seedDatabase() {
     await mongoose.connect(MONGO_URI);
     console.log("✅ MongoDB connected successfully");
 
-    // Clear existing collections
     await Client.deleteMany({});
     await Business.deleteMany({});
     console.log("🧹 Cleared existing collections");
 
-    // Hash passwords
     const hashedClients = await Promise.all(
       clients.map(async (c) => ({
         ...c,
@@ -105,7 +108,6 @@ async function seedDatabase() {
       }))
     );
 
-    // Insert data
     await Client.insertMany(hashedClients);
     await Business.insertMany(hashedBusinesses);
 
