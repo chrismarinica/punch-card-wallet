@@ -10,7 +10,7 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 flex flex-col items-center justify-center p-6">
       <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-16 text-center animate-pulse">
-        Welcome to Punch Card Wallet
+        Welcome to PunchCardWallet
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl">
